@@ -16,7 +16,7 @@ func (s *Stack[T]) push(item T) {
 
 func (s *Stack[T]) pop() (T, error) {
 	if s.empty() {
-		return nil, errors.New("empty stack")
+		return *new(T), errors.New("empty stack")
 	}
 
 	topIndex := len(s.items) - 1
@@ -29,7 +29,7 @@ func (s *Stack[T]) pop() (T, error) {
 
 func (s *Stack[T]) top() (T, error) {
 	if s.empty() {
-		return nil, errors.New("empty stack")
+		return *new(T), errors.New("empty stack")
 	}
 
 	topIndex := len(s.items) - 1
