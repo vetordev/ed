@@ -7,7 +7,7 @@ import (
 )
 
 // expr: ((2 * 3) + (3 / 2)) -> 23*32/+
-func PostfixMathExpr(expr string) (string, error) {
+func PostfixMathExpr(expr string) string {
 	stack := NewStack[int32]()
 	postfixExpr := ""
 
@@ -28,7 +28,7 @@ func PostfixMathExpr(expr string) (string, error) {
 
 	}
 
-	return postfixExpr, nil
+	return postfixExpr
 }
 
 func SumPostFixedExpr(expr string) float64 {
