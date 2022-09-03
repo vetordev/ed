@@ -47,14 +47,3 @@ func TestSumPostFixed(t *testing.T) {
 		t.Fatalf(`SumPostFixedExpr(%q) = %g, want match for %g`, postFixed, sum, want)
 	}
 }
-
-func TestPostFixImproved(t *testing.T) {
-	mathExpr := "245*342+82/43"
-	postfix := PostfixMathExpr(mathExpr)
-
-	want := "245 342*82 43/+"
-
-	if postfix != want {
-		t.Fatalf(`PostfixMathExpr(%q) = %q, want match for %q`, mathExpr, postfix, want)
-	}
-}
