@@ -6,17 +6,17 @@ type Stack[T comparable] struct {
 	items []T
 }
 
-func (s *Stack[T]) empty() bool {
+func (s *Stack[T]) Empty() bool {
 	return len(s.items) == 0
 }
 
-func (s *Stack[T]) push(item T) {
+func (s *Stack[T]) Push(item T) {
 	s.items = append(s.items, item)
 }
 
-func (s *Stack[T]) pop() (T, error) {
-	if s.empty() {
-		return *new(T), errors.New("empty stack")
+func (s *Stack[T]) Pop() (T, error) {
+	if s.Empty() {
+		return *new(T), errors.New("Empty stack")
 	}
 
 	topIndex := len(s.items) - 1
@@ -27,9 +27,9 @@ func (s *Stack[T]) pop() (T, error) {
 	return top, nil
 }
 
-func (s *Stack[T]) top() (T, error) {
-	if s.empty() {
-		return *new(T), errors.New("empty stack")
+func (s *Stack[T]) Top() (T, error) {
+	if s.Empty() {
+		return *new(T), errors.New("Empty stack")
 	}
 
 	topIndex := len(s.items) - 1

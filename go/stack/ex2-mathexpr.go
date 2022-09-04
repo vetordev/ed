@@ -13,7 +13,7 @@ func PostfixMathExpr(expr string) string {
 
 	for _, char := range expr {
 		if char == ')' {
-			operator, _ := stack.pop()
+			operator, _ := stack.Pop()
 
 			postfixExpr += string(operator)
 		}
@@ -23,7 +23,7 @@ func PostfixMathExpr(expr string) string {
 		}
 
 		if strings.Contains("+-*/", string(char)) {
-			stack.push(char)
+			stack.Push(char)
 		}
 
 	}
@@ -37,30 +37,30 @@ func SumPostFixedExpr(expr string) float64 {
 
 	for _, char := range expr {
 		if conv, err := strconv.ParseFloat(string(char), 64); err == nil {
-			stack.push(conv)
+			stack.Push(conv)
 			continue
 		}
 
-		value2, _ := stack.pop()
-		value1, _ := stack.pop()
+		value2, _ := stack.Pop()
+		value1, _ := stack.Pop()
 
 		switch char {
 		case '+':
-			stack.push(value1 + value2)
+			stack.Push(value1 + value2)
 			break
 		case '-':
-			stack.push(value1 - value2)
+			stack.Push(value1 - value2)
 			break
 		case '*':
-			stack.push(value1 * value2)
+			stack.Push(value1 * value2)
 			break
 		case '/':
-			stack.push(value1 / value2)
+			stack.Push(value1 / value2)
 			break
 		}
 	}
 
-	r, _ := stack.pop()
+	r, _ := stack.Pop()
 
 	return r
 }

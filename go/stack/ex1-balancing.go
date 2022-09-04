@@ -9,23 +9,23 @@ func IsBalancedExpr(expr string) bool {
 	for _, char := range expr {
 		switch char {
 		case '{':
-			stack.push('}')
+			stack.Push('}')
 			break
 		case '[':
-			stack.push(']')
+			stack.Push(']')
 			break
 		case '(':
-			stack.push(')')
+			stack.Push(')')
 			break
 		default:
-			if item, err := stack.pop(); err != nil || item != char {
+			if item, err := stack.Pop(); err != nil || item != char {
 				return false
 			}
 
 		}
 	}
 
-	if !stack.empty() {
+	if !stack.Empty() {
 		return false
 	}
 
