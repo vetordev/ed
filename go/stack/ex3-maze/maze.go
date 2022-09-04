@@ -1,6 +1,9 @@
-package stack
+package maze
 
-import "os"
+import (
+	"errors"
+	"os"
+)
 
 const (
 	Free = 0
@@ -9,8 +12,8 @@ const (
 
 type Maze struct {
 	squares [][]Square
-	begin   Coordinates
-	end     Coordinates
+	begin   *Coordinates
+	end     *Coordinates
 }
 
 type Square struct {
@@ -23,19 +26,27 @@ type Coordinates struct {
 	Y int
 }
 
-func (m *Maze) Begin() Coordinates {
+func (m *Maze) GetSquare(coordinates *Coordinates) (Square, error) {
+	if coordinates.X > len(m.squares) || coordinates.Y > len(m.squares[coordinates.X]) {
+		return *new(Square), errors.New("coordinates exceeded the limits of the maze")
+	}
+
+	return m.squares[coordinates.X][coordinates.Y], nil
+}
+
+func (m *Maze) Begin() *Coordinates {
 	return m.begin
 }
 
-func (m *Maze) AtTheBeginning(coordinates Coordinates) bool {
-	return m.begin == coordinates
+func (m *Maze) AtTheBeginning(coordinates *Coordinates) bool {
+	return *m.begin == *coordinates
 }
 
-func (m *Maze) AtTheEnd(coordinates Coordinates) bool {
-	return m.end == coordinates
+func (m *Maze) AtTheEnd(coordinates *Coordinates) bool {
+	return *m.end == *coordinates
 }
 
-func (m *Maze) PrintMaze(file string, player Coordinates) {
+func (m *Maze) PrintMaze(file string, player *Coordinates) {
 
 	data := ""
 	for x, row := range m.squares {
@@ -43,11 +54,11 @@ func (m *Maze) PrintMaze(file string, player Coordinates) {
 			ch := "  "
 
 			coordinates := Coordinates{x, y}
-			if coordinates == player {
+			if coordinates == *player {
 				ch = "👾"
 			} else if square.state == Wall {
 				ch = "🧱"
-			} else if m.AtTheBeginning(coordinates) || m.AtTheEnd(coordinates) {
+			} else if m.AtTheBeginning(&coordinates) || m.AtTheEnd(&coordinates) {
 				ch = "🚪"
 			}
 
@@ -81,7 +92,7 @@ func CreateMaze() *Maze {
 
 	return &Maze{
 		squares,
-		Coordinates{1, 0},
-		Coordinates{4, 5},
+		&Coordinates{1, 0},
+		&Coordinates{4, 5},
 	}
 }
