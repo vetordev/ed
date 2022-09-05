@@ -27,11 +27,11 @@ type Coordinates struct {
 }
 
 func (m *Maze) GetSquare(coordinates *Coordinates) (Square, error) {
-	if coordinates.X > len(m.squares) || coordinates.Y > len(m.squares[coordinates.X]) {
+	if coordinates.X < 0 || coordinates.Y < 0 || coordinates.Y >= len(m.squares) || coordinates.X >= len(m.squares[coordinates.Y]) {
 		return *new(Square), errors.New("coordinates exceeded the limits of the maze")
 	}
 
-	return m.squares[coordinates.X][coordinates.Y], nil
+	return m.squares[coordinates.Y][coordinates.X], nil
 }
 
 func (m *Maze) Begin() *Coordinates {
@@ -49,8 +49,8 @@ func (m *Maze) AtTheEnd(coordinates *Coordinates) bool {
 func (m *Maze) PrintMaze(file string, player *Coordinates) {
 
 	data := ""
-	for x, row := range m.squares {
-		for y, square := range row {
+	for y, row := range m.squares {
+		for x, square := range row {
 			ch := "  "
 
 			coordinates := Coordinates{x, y}
@@ -92,7 +92,7 @@ func CreateMaze() *Maze {
 
 	return &Maze{
 		squares,
-		&Coordinates{1, 0},
-		&Coordinates{4, 5},
+		&Coordinates{0, 1},
+		&Coordinates{5, 4},
 	}
 }
