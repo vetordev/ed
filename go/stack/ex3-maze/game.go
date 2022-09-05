@@ -4,24 +4,21 @@ import (
 	stack2 "ed/stack"
 )
 
-func findNextSquare(m *Maze, player *Coordinates, crossed bool) *Coordinates {
-	var nextCoordinates Coordinates
-
-	if sq, err := m.GetSquare(&Coordinates{player.X + 1, player.Y}); err == nil && sq.crossed == crossed && sq.state == Free {
-		nextCoordinates = Coordinates{player.X + 1, player.Y}
-	} else if sq, err = m.GetSquare(&Coordinates{player.X, player.Y + 1}); err == nil && sq.crossed == crossed && sq.state == Free {
-		nextCoordinates = Coordinates{player.X, player.Y + 1}
-	} else if sq, err = m.GetSquare(&Coordinates{player.X - 1, player.Y}); err == nil && sq.crossed == crossed && sq.state == Free {
-		nextCoordinates = Coordinates{player.X - 1, player.Y}
-	} else if sq, err = m.GetSquare(&Coordinates{player.X, player.Y - 1}); err == nil && sq.crossed == crossed && sq.state == Free {
-		nextCoordinates = Coordinates{player.X, player.Y - 1}
+func findNextMove(m *Maze, player *Coordinates, crossed bool) *Coordinates {
+	movements := []Coordinates{
+		{player.X + 1, player.Y},
+		{player.X, player.Y + 1},
+		{player.X - 1, player.Y},
+		{player.X, player.Y - 1},
 	}
 
-	if (nextCoordinates != Coordinates{}) {
-		return &nextCoordinates
+	for _, move := range movements {
+		if sq, err := m.GetSquare(&move); err == nil && sq.crossed == crossed && sq.state == Free {
+			return &move
+		}
 	}
 
-	return findNextSquare(m, player, false)
+	return findNextMove(m, player, !crossed)
 }
 
 func Init() {
@@ -32,7 +29,7 @@ func Init() {
 	maze.PrintMaze("maze.txt", player)
 
 	for !maze.AtTheEnd(player) {
-		next := findNextSquare(maze, player, true)
+		next := findNextMove(maze, player, false)
 		way.Push(*next)
 
 		player = next
