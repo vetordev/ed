@@ -2,9 +2,11 @@ package maze
 
 import (
 	stack2 "ed/stack"
+	"errors"
+	"os"
 )
 
-func findNextMove(m *Maze, player *Coordinates, crossed bool) *Coordinates {
+func findNextMove(m *Maze, player *Coordinates) (Coordinates, error) {
 	movements := []Coordinates{
 		{player.X + 1, player.Y},
 		{player.X, player.Y + 1},
@@ -13,27 +15,30 @@ func findNextMove(m *Maze, player *Coordinates, crossed bool) *Coordinates {
 	}
 
 	for _, move := range movements {
-		if sq, err := m.GetSquare(&move); err == nil && sq.crossed == crossed && sq.state == Free {
-			return &move
+		if sq, err := m.GetSquare(&move); err == nil && sq.crossed == false && sq.state == Free {
+			return move, nil
 		}
 	}
 
-	return findNextMove(m, player, !crossed)
+	return *new(Coordinates), errors.New("there's no movement available")
 }
 
-func Init() {
+func Init(file *os.File) {
 	maze := CreateMaze()
 	way := stack2.NewStack[Coordinates]()
 
 	player := maze.Begin()
-	maze.PrintMaze("maze.txt", player)
+	maze.PrintMaze(file, &player)
 
-	for !maze.AtTheEnd(player) {
-		next := findNextMove(maze, player, false)
-		way.Push(*next)
+	for !maze.AtTheEnd(&player) {
+		if next, err := findNextMove(maze, &player); err == nil {
+			way.Push(next)
+		} else {
+			way.Pop()
+		}
 
-		player = next
+		player, _ = way.Top()
 
-		maze.PrintMaze("maze.txt", player)
+		maze.PrintMaze(file, &player)
 	}
 }
