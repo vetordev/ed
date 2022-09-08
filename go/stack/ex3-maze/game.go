@@ -16,6 +16,7 @@ func findNextMove(m *Maze, player *Coordinates) (Coordinates, error) {
 
 	for _, move := range movements {
 		if sq, err := m.GetSquare(&move); err == nil && sq.crossed == false && sq.state == Free {
+			sq.crossed = true
 			return move, nil
 		}
 	}
