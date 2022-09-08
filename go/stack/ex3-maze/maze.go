@@ -48,7 +48,7 @@ func (m *Maze) AtTheEnd(coordinates *Coordinates) bool {
 
 func (m *Maze) PrintMaze(file *os.File, player *Coordinates) {
 
-	data := ""
+	data := "\n"
 	for y, row := range m.squares {
 		for x, square := range row {
 			ch := "  "
@@ -74,12 +74,19 @@ func (m *Maze) PrintMaze(file *os.File, player *Coordinates) {
 func CreateMaze() *Maze {
 
 	defaultMaze := [][]int{
-		{Wall, Wall, Wall, Wall, Wall, Wall},
-		{Free, Free, Wall, Wall, Wall, Wall},
-		{Wall, Free, Free, Free, Wall, Wall},
-		{Wall, Free, Wall, Free, Wall, Wall},
-		{Wall, Free, Wall, Free, Free, Free},
-		{Wall, Wall, Wall, Wall, Wall, Wall},
+		{Wall, Wall, Wall, Wall, Wall, Wall, Wall, Wall, Wall},
+		{Wall, Wall, Free, Free, Free, Free, Free, Free, Wall},
+		{Wall, Wall, Wall, Wall, Wall, Free, Wall, Free, Wall},
+		{Wall, Wall, Free, Free, Free, Free, Wall, Free, Wall},
+		{Wall, Wall, Free, Wall, Wall, Wall, Wall, Free, Free},
+		{Wall, Free, Free, Free, Free, Free, Wall, Wall, Wall},
+		{Wall, Free, Wall, Wall, Wall, Wall, Wall, Wall, Wall},
+		{Wall, Free, Free, Wall, Free, Free, Free, Free, Wall},
+		{Wall, Wall, Free, Wall, Free, Wall, Wall, Wall, Wall},
+		{Free, Free, Free, Free, Free, Wall, Free, Free, Wall},
+		{Wall, Wall, Wall, Wall, Free, Wall, Wall, Free, Wall},
+		{Wall, Wall, Wall, Wall, Free, Free, Free, Free, Wall},
+		{Wall, Wall, Wall, Wall, Wall, Wall, Wall, Wall, Wall},
 	}
 
 	squares := make([][]Square, len(defaultMaze))
@@ -93,7 +100,7 @@ func CreateMaze() *Maze {
 
 	return &Maze{
 		squares,
-		Coordinates{0, 1},
-		Coordinates{5, 4},
+		Coordinates{0, 9},
+		Coordinates{8, 4},
 	}
 }
